@@ -7,11 +7,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import static org.hamcrest.Matchers.hasEntry;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @WebMvcTest(Endpoints.class)
@@ -49,5 +53,19 @@ public class EndpointTest {
                 .andExpect(jsonPath("$[1].tickets[1].firstName", is("Alden")))
                 .andExpect(jsonPath("$[1].tickets[1].lastName", is("Davidson")))
                 .andExpect(jsonPath("$[1].price", is(200)));
+    }
+    @Test
+    public void postFlightsGetTotal() throws Exception {
+        String json = getJSON("/data.json").toString();
+        this.mvc.perform(
+                post("/flights/tickets/total")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.result", is(350)));
+    }
+    private String getJSON(String path) throws Exception {
+        URL url = this.getClass().getResource(path);
+        return new String(Files.readAllBytes(Paths.get(url.toURI())));
     }
 }

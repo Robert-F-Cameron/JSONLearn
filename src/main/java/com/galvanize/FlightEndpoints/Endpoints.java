@@ -3,9 +3,7 @@ package com.galvanize.FlightEndpoints;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @RestController
 public class Endpoints {
@@ -39,5 +37,15 @@ public class Endpoints {
         flight1.setPrice(200);
         flight1.setTickets(robert);
         return Collections.singletonList(flight1);
+    }
+    @PostMapping("/flights/tickets/total")
+    public HashMap<String, Integer> getTotal(@RequestBody Tickets tickets){
+        Integer sum = 0;
+        HashMap<String, Integer> total = new HashMap<>();
+        for (Tickets.Ticket ticket : tickets.getTickets()){
+            sum += ticket.getPrice();
+        }
+        total.put("result", sum);
+        return total;
     }
 }

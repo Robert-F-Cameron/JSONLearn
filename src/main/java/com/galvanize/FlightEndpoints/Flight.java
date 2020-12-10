@@ -36,6 +36,7 @@ public class Flight {
     public void setTickets(Passenger... passengers) {
         this.tickets.addAll(Arrays.asList(passengers));
     }
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class Passenger {
         private String firstName;
