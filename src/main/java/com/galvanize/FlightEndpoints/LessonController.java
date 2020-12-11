@@ -2,8 +2,10 @@ package com.galvanize.FlightEndpoints;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
-@RequestMapping("/database")
+@RequestMapping("/lessons")
 public class LessonController {
     private final LessonRepository repository;
     public LessonController(LessonRepository repository) {
@@ -18,6 +20,16 @@ public class LessonController {
     @PostMapping("")
     public Lesson create(@RequestBody Lesson lesson) {
         return this.repository.save(lesson);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id){
+        this.repository.deleteById(id);
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Lesson> find(@PathVariable Long id){
+        return this.repository.findById(id);
     }
 
 }
