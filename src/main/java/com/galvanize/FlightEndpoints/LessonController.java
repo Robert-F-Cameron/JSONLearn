@@ -32,4 +32,17 @@ public class LessonController {
         return this.repository.findById(id);
     }
 
+    @PatchMapping("/{id}")
+    public Optional<Lesson> patch(
+            @PathVariable Long id,
+            @RequestBody Lesson lesson){
+        Optional<Lesson> patchedLesson = this.repository.findById(id);
+        patchedLesson.ifPresent(value -> {
+            value.setTitle(lesson.getTitle());
+            value.setDeliveredOn(lesson.getDeliveredOn());
+            this.repository.save(value);
+        });
+        return patchedLesson;
+    }
+
 }
