@@ -1,0 +1,23 @@
+package com.galvanize.FlightEndpoints;
+
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/database")
+public class LessonController {
+    private final LessonRepository repository;
+    public LessonController(LessonRepository repository) {
+        this.repository = repository;
+    }
+
+    @GetMapping("")
+    public Iterable<Lesson> all() {
+        return this.repository.findAll();
+    }
+
+    @PostMapping("")
+    public Lesson create(@RequestBody Lesson lesson) {
+        return this.repository.save(lesson);
+    }
+
+}
