@@ -20,7 +20,8 @@ public class WordCounterController {
 
     @PostMapping("/count")
     public Map<String, String> post(@RequestBody String input){
-        return this.wordCounter.count(input);
+        this.wordCounter.setInput(input);
+        return this.wordCounter.count();
     }
 
 }

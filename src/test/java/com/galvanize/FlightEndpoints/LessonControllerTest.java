@@ -22,8 +22,7 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -78,12 +77,12 @@ public class LessonControllerTest {
     public void testGetByDates() throws Exception {
         MockHttpServletRequestBuilder post = post("/lessons")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"title\": \"SQL\" \"deliveredOn\": \"2017-04-24\"}");
+                .content("{\"id\":2,\"title\":\"Spring Docs\",\"deliveredOn\":\"2018-04-12\"}");
         this.mvc.perform(post);
         this.mvc.perform(
-                get("/lessons/between?date1=2017-03-17&date2=2017-12-17")
+                get("/lessons/between?date1=2018-03-17&date2=2018-12-17")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.title", is("SQL")));
+                .andExpect(content().string("[{\"id\":2,\"title\":\"Spring Docs\",\"deliveredOn\":\"2018-04-12\"}]"));
     }
 }
