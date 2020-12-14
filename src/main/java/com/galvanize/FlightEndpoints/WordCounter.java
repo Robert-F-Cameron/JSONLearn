@@ -5,13 +5,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
 public class WordCounter {
-
-
-    public WordCounter wordCounter() {
-        return new WordCounter();
-    }
 
     public Map<String, String> count(String input){
         Map<String, String> wordCount = new HashMap<>();
