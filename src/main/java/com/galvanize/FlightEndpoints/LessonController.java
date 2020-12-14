@@ -1,7 +1,14 @@
 package com.galvanize.FlightEndpoints;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @RestController
@@ -48,6 +55,14 @@ public class LessonController {
     @GetMapping("/find/{title}")
     public Lesson findByTitle(@PathVariable String title){
         return this.repository.findByTitle(title);
+    }
+    @GetMapping("/between")
+
+    public List<Lesson> findByDates(@Param("date1") String date1, @Param("date2") String date2) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        Date date1p = formatter.parse(date1);
+        Date date2p = formatter.parse(date2);
+        return this.repository.findByDates(date1p, date2p);
     }
 
 }

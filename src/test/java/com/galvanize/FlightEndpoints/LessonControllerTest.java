@@ -60,4 +60,30 @@ public class LessonControllerTest {
                 .andExpect(jsonPath("$.id", is(1)));
 
     }
+    @Test
+    @Transactional
+    public void testGetByTitle() throws Exception {
+        MockHttpServletRequestBuilder post = post("/lessons")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"title\": \"SQL\"}");
+        this.mvc.perform(post);
+        this.mvc.perform(
+                get("/lessons/find/SQL")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.title", is("SQL")));
+    }
+    @Test
+    @Transactional
+    public void testGetByDates() throws Exception {
+        MockHttpServletRequestBuilder post = post("/lessons")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"title\": \"SQL\" \"deliveredOn\": \"2017-04-24\"}");
+        this.mvc.perform(post);
+        this.mvc.perform(
+                get("/lessons/between?date1=2017-03-17&date2=2017-12-17")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.title", is("SQL")));
+    }
 }
